@@ -1,101 +1,80 @@
-🎬 Movie Booking System (Node.js + MongoDB)
+🎬 Movie Booking System API
 
-A backend API for a Movie Booking platform built using Node.js, Express, and MongoDB (Mongoose).
-It supports users, movies, shows, and booking management with relational schema design.
+Node.js | Express | MongoDB | Mongoose
 
-🚀 Features
-👤 User management with unique email authentication
-🎬 Movie catalog with metadata (title, genres, cast, rating, etc.)
-🕒 Show scheduling with movie + datetime uniqueness constraint
-🎟️ Booking system with seat selection and payment tracking
-🔗 Relational schema design using MongoDB references
-🧾 Timestamp tracking for all collections
+A scalable backend API for a Movie Ticket Booking System built using Node.js and MongoDB.
+This project demonstrates real-world backend architecture including relational data modeling, indexing, and booking workflows.
+
+📌 Overview
+
+The Movie Booking System provides APIs to manage users, movies, shows, and ticket bookings.
+It follows a modular architecture with Mongoose-based schema design and relational references to simulate real-world booking platforms.
+
+🚀 Key Features
+👤 User Management
+Secure user model with unique email enforcement
+Role-based structure (user, admin)
+Scalable authentication-ready schema design
+🎬 Movie Management
+Store detailed movie metadata
+Supports genres, cast, ratings, runtime, and media assets
+Optimized for catalog browsing systems
+🕒 Show Scheduling
+Schedule movies with specific date and time
+Enforced uniqueness constraint on (movie, showDateTime)
+Seat availability tracking per show
+🎟️ Booking System
+Seat selection and reservation handling
+Payment tracking with status lifecycle
+Association between users and shows via references
+🔗 Data Modeling
+Fully relational design using MongoDB references (ObjectId)
+Normalized schema structure for scalability
+Timestamp tracking for all entities
 🧱 Tech Stack
-Node.js
-Express.js
-MongoDB
-Mongoose
-dotenv
-📁 Project Structure
-Movie-Booking-using-Nodejs/
-│
-├── src/
-│   ├── index.js
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Movie.js
-│   │   ├── Show.js
-│   │   └── Booking.js
-│   │
-│   └── routes/   (future expansion)
-│
-├── .env
-├── .gitignore
-├── package.json
-└── README.md
-🧑‍💻 Database Models
-👤 User
-name: String
-email: String (unique, lowercase)
-password: String
-role: String (user/admin)
-timestamps: true
-🎬 Movie
-title: String
-overview: String
-poster: String (URL)
-backdrop: String (URL)
-release_date: Date
-genres: [String]
-casts: [String]
-runtime: Number
-vote_average: Number
-timestamps: true
-🕒 Show
-movie: ObjectId (ref: Movie)
-showDateTime: Date
-availableSeats: Number
-price: Number
-timestamps: true
+Runtime: Node.js
+Framework: Express.js
+Database: MongoDB
+ODM: Mongoose
+Config: dotenv
 
-📌 Constraint:
-
-Unique index on (movie, showDateTime)
-🎟️ Booking
-user: ObjectId (ref: User)
-show: ObjectId (ref: Show)
-bookedSeats: [String/Number]
-amount: Number
-paymentStatus: String (pending/completed/failed)
-paymentInfo: Object
-timestamps: true
-⚙️ Setup Instructions
-1. Clone the repository
+⚙️ Getting Started
+1. Clone Repository
 git clone https://github.com/your-username/movie-booking-nodejs.git
 cd movie-booking-nodejs
-2. Install dependencies
+2. Install Dependencies
 npm install
-3. Create .env file
+3. Environment Configuration
+
+Create a .env file:
+
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_secret_key
-4. Run the project
+4. Run the Application
 npm start
-📌 Future Improvements
-Authentication with JWT
-Seat locking system
-Payment gateway integration (Stripe/Razorpay)
-Admin dashboard
-Email notifications
-🧠 Learning Goals
+🧠 Architecture Highlights
+Modular schema-based design
+Normalized MongoDB relationships using references
+Indexing for performance optimization
+Extensible structure for authentication and payments
+Clean separation of models and routes
+📈 Future Enhancements
+JWT-based authentication & authorization
+Seat locking / concurrency control
+Payment gateway integration (Stripe / Razorpay)
+Admin dashboard APIs
+Email notifications for bookings
+Caching layer (Redis)
+🎯 Learning Outcomes
 
-This project helps you understand:
+This project demonstrates:
 
-MongoDB schema relationships
-Mongoose population (ref)
-Real-world booking system design
-Indexing & constraints in NoSQL
-Backend architecture using Node.js
+Real-world backend system design
+MongoDB schema modeling & relationships
+Indexing strategies in NoSQL databases
+API-ready scalable architecture
+Production-level Node.js project structure
 📄 License
 
-This project is open-source and available for learning purposes.
+This project is licensed for educational and learning purposes.
