@@ -16,7 +16,7 @@ router.post(
 router.post(
   "/login",
   authMiddleware.validateSigninRequest,
-  authController.signin
+  authController.login
 );
 
 // Reset Password
