@@ -1,36 +1,49 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
-const bookingSchema = new mongoose.Schema(
-  {
-    user: {
-         type: String, 
-         required: true, 
-         ref: "User" 
+const { BOOKING_STATUS } = require('../utils/constants');
+
+const bookingSchema = new mongoose.Schema({
+    theatreId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Theatre'
     },
-    show: { 
-         type: String,
-         required: true,
-         ref: "Show"
-     },
-    amount: { 
-        type: Number,
-        required: true 
+    movieId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Movie'
     },
-    bookedSeats: { 
-        type: Array, 
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    },
+    timing: {
+        type: String,
         required: true
     },
-    isPaid: { 
-        type: Boolean,
-        required: false 
+    noOfSeats: {
+        type: Number,
+        required: true,
     },
-    paymentLink: { 
-        type: String
-   },
-  },
-  { timestamps: true }
-);
+    totalCost: {
+        type: Number,
+        required: true
+    },
+    status: {
+        type: String,
+        required: true,
+        enum: {
+            values: [BOOKING_STATUS.processing, BOOKING_STATUS.cancelled, BOOKING_STATUS.successfull, BOOKING_STATUS.expired],
+            message: "Invalid booking status"
+        },
+        default: BOOKING_STATUS.processing
+    },
+    seat: {
+        type: String,
+    }
+}, {timestamps: true});
 
-const Booking = mongoose.model("Booking", bookingSchema);
+const Booking = mongoose.model('Booking', bookingSchema);
 
-export default Booking;
+module.exports = Booking;

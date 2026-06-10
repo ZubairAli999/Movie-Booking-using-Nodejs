@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+/**
+ * Defines the schema of theatre resource to be stored in the db
+ */
 
 const theatreSchema = new mongoose.Schema({
     name: {

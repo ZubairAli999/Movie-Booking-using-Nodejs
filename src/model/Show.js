@@ -1,38 +1,36 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
-const showSchema = new mongoose.Schema(
-  {
-    movie: {
-      type: String,
-      required: true,
-      ref: "Movie",
+const showSchema = new mongoose.Schema({
+    theatreId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Theatre'
     },
-
-    showDateTime: {
-      type: Date,
-      required: true,
-      index: true,
+    movieId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Movie'
     },
-
-    showPrice: {
-      type: Number,
-      required: true,
+    timing: {
+        type: String,
+        required: true
     },
-
-    occupiedSeats: {
-      type: Object,
-      default: {},
+    noOfSeats: {
+        type: Number,
+        required: true
     },
-  },
-  {
-    timestamps: true,
-    minimize: false,
-  },
-);
+    seatConfiguration: {
+        type: String,
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    format: {
+        type: String
+    }
+}, {timestamps: true});
 
-// Prevent duplicate shows for same movie and time
-showSchema.index({ movie: 1, showDateTime: 1 }, { unique: true });
+const Show = mongoose.model('Show', showSchema);
 
-const Show = mongoose.model("Show", showSchema);
-
-export default Show;
+module.exports = Show;
