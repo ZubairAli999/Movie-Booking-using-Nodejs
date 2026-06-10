@@ -11,6 +11,7 @@ const authRoutes = require("./router/auth-router");
 const userRoutes = require("./router/user-router");
 const bookingRoutes = require("./router/booking-router");
 const showRoutes = require("./router/show-router");
+const paymentRoutes =require("./router/payment-router")
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -26,7 +27,6 @@ connectDB();
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Home Route
 app.get("/", (req, res) => {
@@ -43,6 +43,7 @@ app.use("/api/v1/movies", movieRoutes);
 app.use("/api/v1/theatres", theatreRoutes);
 app.use("/api/v1/shows", showRoutes);
 app.use("/api/v1/bookings", bookingRoutes);
+app.use("/api/v1/payment", paymentRoutes);
 
 
 // 404 Route Handler
