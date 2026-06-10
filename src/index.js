@@ -21,9 +21,6 @@ dotenv.config();
 // Database Connection
 connectDB();
 
-// Express App
-
-
 // Middlewares
 app.use(cors());
 app.use(express.json());
