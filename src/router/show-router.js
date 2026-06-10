@@ -1,35 +1,41 @@
-const showController = require('../controller/show-controller');
-const authMiddlewares = require('../middleware/auth-middleware');
-const showMiddlewares = require('../middleware/show-middleware');
+const express = require("express");
 
-const routes = (app) => {
-    app.post(
-        '/movie/api/v1/shows',
-        authMiddlewares.isAuthenticated,
-        authMiddlewares.isAdminOrClient,
-        showMiddlewares.validateCreateShowRequest,
-        showController.create
-    );
+const showController = require("../controller/show-controller");
+const authMiddlewares = require("../middleware/auth-middleware");
+const showMiddlewares = require("../middleware/show-middleware");
 
-    app.get(
-        '/movie/api/v1/shows',
-        showController.getShows
-    );
+const router = express.Router();
 
-    app.delete(
-        '/movie/api/v1/shows/:id',
-        authMiddlewares.isAuthenticated,
-        authMiddlewares.isAdminOrClient,
-        showController.destroy
-    );
+// Create Show
+router.post(
+  "/",
+  authMiddlewares.isAuthenticated,
+  authMiddlewares.isAdminOrClient,
+  showMiddlewares.validateCreateShowRequest,
+  showController.create
+);
 
-    app.patch(
-        '/movie/api/v1/shows/:id',
-        authMiddlewares.isAuthenticated,
-        authMiddlewares.isAdminOrClient,
-        showMiddlewares.validateShowUpdateRequest,
-        showController.update
-    );
-}
+// Get All Shows
+router.get(
+  "/",
+  showController.getShows
+);
 
-module.exports = routes;
+// Delete Show
+router.delete(
+  "/:id",
+  authMiddlewares.isAuthenticated,
+  authMiddlewares.isAdminOrClient,
+  showController.destroy
+);
+
+// Update Show
+router.patch(
+  "/:id",
+  authMiddlewares.isAuthenticated,
+  authMiddlewares.isAdminOrClient,
+  showMiddlewares.validateShowUpdateRequest,
+  showController.update
+);
+
+module.exports = router;

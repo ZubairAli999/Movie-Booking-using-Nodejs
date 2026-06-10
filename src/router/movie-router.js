@@ -1,51 +1,54 @@
-const movieController = require('../controller/movie-controller');
-const movieMiddlewares = require('../middleware/movie-middleware');
-const authMiddlewares = require('../middleware/auth-middleware');
+const express = require("express");
 
-const routes = (app) => {
-    app.post(
-        '/movie/api/v1/movies', 
-        authMiddlewares.isAuthenticated,
-        authMiddlewares.isAdminOrClient,
-        movieMiddlewares.validateMovieCreateRequest,
-        movieController.createMovie
-    );
+const movieController = require("../controller/movie-controller");
+const movieMiddlewares = require("../middleware/movie-middleware");
+const authMiddlewares = require("../middleware/auth-middleware");
 
-    // DELETE
-    app.delete(
-        '/movie/api/v1/movies/:id',
-        authMiddlewares.isAuthenticated,
-        authMiddlewares.isAdminOrClient,
-        movieController.deleteMovie
-    );
+const router = express.Router();
 
-    // READ
-    app.get(
-        '/movie/api/v1/movies/:id',
-        movieController.getMovie
-    );
+// Create Movie
+router.post(
+    "/",
+    authMiddlewares.isAuthenticated,
+    authMiddlewares.isAdminOrClient,
+    movieMiddlewares.validateMovieCreateRequest,
+    movieController.createMovie
+);
 
-    // UPDATE
-    app.put(
-        '/movie/api/v1/movies/:id',
-        authMiddlewares.isAuthenticated,
-        authMiddlewares.isAdminOrClient,
-        movieController.updateMovie
-    );
+// Get All Movies
+router.get(
+    "/",
+    movieController.getMovies
+);
 
-    // UPDATE
-    app.patch(
-        '/movie/api/v1/movies/:id',
-        authMiddlewares.isAuthenticated,
-        authMiddlewares.isAdminOrClient,
-        movieController.updateMovie
-    );
+// Get Single Movie
+router.get(
+    "/:id",
+    movieController.getMovie
+);
 
-    // READ
-    app.get(
-        '/movie/api/v1/movies',
-        movieController.getMovies
-    );
-}
+// Update Movie (Full Update)
+router.put(
+    "/:id",
+    authMiddlewares.isAuthenticated,
+    authMiddlewares.isAdminOrClient,
+    movieController.updateMovie
+);
 
-module.exports = routes;
+// Update Movie (Partial Update)
+router.patch(
+    "/:id",
+    authMiddlewares.isAuthenticated,
+    authMiddlewares.isAdminOrClient,
+    movieController.updateMovie
+);
+
+// Delete Movie
+router.delete(
+    "/:id",
+    authMiddlewares.isAuthenticated,
+    authMiddlewares.isAdminOrClient,
+    movieController.deleteMovie
+);
+
+module.exports = router;

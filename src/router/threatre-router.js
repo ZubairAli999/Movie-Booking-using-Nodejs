@@ -1,68 +1,91 @@
-const theatreController = require('../controller/threatre-controller');
-const theatreMiddleware = require('../middleware/threatre-middleware');
-const authMiddleware = require('../middleware/auth-middleware');
+const express = require("express");
 
-const routes = (app) => {
-    
-    app.post(
-        '/movie/api/v1/theatres',
-        authMiddleware.isAuthenticated,
-        authMiddleware.isAdminOrClient,
-        theatreMiddleware.validateTheatreCreateRequest,
-        theatreController.create
-    );
+const theatreController = require("../controller/threatre-controller");
+const theatreMiddleware = require("../middleware/threatre-middleware");
+const authMiddleware = require("../middleware/auth-middleware");
 
-    // DELETE
-    app.delete(
-        '/movie/api/v1/theatres/:id',
-        authMiddleware.isAuthenticated,
-        authMiddleware.isAdminOrClient,
-        theatreController.destroy
-    );
+const router = express.Router();
 
-    // READ
-    app.get(
-        '/movie/api/v1/theatres/:id',
-        theatreController.getTheatre
-    );
+/**
+ * CREATE THEATRE
+ */
+router.post(
+  "/",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdminOrClient,
+  theatreMiddleware.validateTheatreCreateRequest,
+  theatreController.create
+);
 
-    // READ
-    app.get(
-        '/movie/api/v1/theatres',
-        theatreController.getTheatres
-    );
+/**
+ * GET ALL THEATRES
+ */
+router.get(
+  "/",
+  theatreController.getTheatres
+);
 
-    // UPDATE
-    app.patch(
-        '/movie/api/v1/theatres/:id',
-        authMiddleware.isAuthenticated,
-        authMiddleware.isAdminOrClient,
-        theatreController.update
-    );
+/**
+ * GET SINGLE THEATRE
+ */
+router.get(
+  "/:id",
+  theatreController.getTheatre
+);
 
-    // UPDATE
-    app.put(
-        '/movie/api/v1/theatres/:id',
-        authMiddleware.isAuthenticated,
-        authMiddleware.isAdminOrClient,
-        theatreController.update
-    );
+/**
+ * UPDATE THEATRE (PATCH)
+ */
+router.patch(
+  "/:id",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdminOrClient,
+  theatreController.update
+);
 
-    app.patch(
-        '/movie/api/v1/theatres/:id/movies',
-        theatreMiddleware.validateUpdateMoviesRequest,
-        theatreController.updateMovies
-    );
+/**
+ * UPDATE THEATRE (PUT)
+ */
+router.put(
+  "/:id",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdminOrClient,
+  theatreController.update
+);
 
-    app.get(
-        '/movie/api/v1/theatres/:id/movies',
-        theatreController.getMovies
-    )
+/**
+ * DELETE THEATRE
+ */
+router.delete(
+  "/:id",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdminOrClient,
+  theatreController.destroy
+);
 
-    app.get(
-        '/movie/api/v1/theatres/:theatreId/movies/:movieId',
-        theatreController.checkMovie
-    );
-}
+/**
+ * UPDATE MOVIES INSIDE THEATRE
+ */
+router.patch(
+  "/:id/movies",
+  theatreMiddleware.validateUpdateMoviesRequest,
+  theatreController.updateMovies
+);
 
-module.exports = routes;
+/**
+ * GET MOVIES INSIDE THEATRE
+ */
+router.get(
+  "/:id/movies",
+  theatreController.getMovies
+);
+
+/**
+ * CHECK SPECIFIC MOVIE IN THEATRE
+ */
+router.get(
+  "/:theatreId/movies/:movieId",
+  theatreController.checkMovie
+);
+
+module.exports = router;
