@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 
 const connectDB = require("./config/db");
+const logger = require("./config/logger");
 
 // Routes
 const movieRoutes = require("./router/movie-router");
@@ -20,6 +21,7 @@ dotenv.config();
 
 // Database Connection
 connectDB();
+logger.info("Application started");
 
 
 
@@ -56,5 +58,5 @@ app.use("*", (req, res) => {
 
 // Listen
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  logger.info(`Server running on port ${PORT}`);
 });

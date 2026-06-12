@@ -1,5 +1,6 @@
 const Movie = require('../model/Movie');
 const { STATUS } = require('../utils/constants');
+const logger = require('../config/logger');
 
 /**
  * 
@@ -9,6 +10,7 @@ const { STATUS } = require('../utils/constants');
 const createMovie = async (data) => {
     try {
         const movie = await Movie.create(data);
+        logger.info(`Movie created in database with ID: ${movie._id}`);
         return movie;
     } catch (error) {
         if(error.name == 'ValidationError') {
@@ -16,9 +18,10 @@ const createMovie = async (data) => {
             Object.keys(error.errors).forEach((key) => {
                 err[key] = error.errors[key].message;
             });
-            console.log(err);
+            logger.warn(`Movie validation error: ${JSON.stringify(err)}`);
             throw {err: err, code: STATUS.UNPROCESSABLE_ENTITY};
         } else {
+            logger.error(`Error creating movie: ${error.message}`);
             throw error;
         }
     }
@@ -33,14 +36,16 @@ const deleteMovie = async (id) => {
     try {
         const response = await Movie.findByIdAndDelete(id);
         if(!response) {
+            logger.warn(`No movie found for deletion with ID: ${id}`);
             throw {
                 err: "No movie record found for the id provided",
                 code: STATUS.NOT_FOUND
             }
         }
+        logger.info(`Movie deleted from database with ID: ${id}`);
         return response
     } catch (error) {
-        console.log(error);
+        logger.error(`Error deleting movie with ID ${id}: ${error.message}`);
         throw error;
     }
 }
@@ -70,6 +75,7 @@ const getMoviById = async (id) => {
 const updateMovie = async (id, data) => {
     try {
         const movie = await Movie.findByIdAndUpdate(id, data, {new: true, runValidators: true});
+        logger.info(`Movie updated in database with ID: ${id}`);
         return movie;
     } catch (error) {
         if(error.name == 'ValidationError') {
@@ -77,9 +83,10 @@ const updateMovie = async (id, data) => {
             Object.keys(error.errors).forEach((key) => {
                 err[key] = error.errors[key].message;
             });
-            console.log(err);
+            logger.warn(`Movie validation error during update with ID ${id}: ${JSON.stringify(err)}`);
             throw {err: err, code: STATUS.UNPROCESSABLE_ENTITY};
         } else {
+            logger.error(`Error updating movie with ID ${id}: ${error.message}`);
             throw error;
         }
     }
