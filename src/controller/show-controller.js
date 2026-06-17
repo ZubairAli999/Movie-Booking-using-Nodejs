@@ -17,7 +17,7 @@ const create = async (req, res) => {
             return res.status(error.code).json(errorResponseBody);
         }
         errorResponseBody.err = error;
-        return res.status(STATUS.OK).json(errorResponseBody);
+        return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errorResponseBody);
     }
 }
 
@@ -33,7 +33,7 @@ const getShows = async (req, res) => {
             return res.status(error.code).json(errorResponseBody);
         }
         errorResponseBody.err = error;
-        return res.status(STATUS.INTERNAL_SERVER_ERROR);
+        return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errorResponseBody);
     }
 }
 
@@ -64,7 +64,6 @@ const update = async (req, res) => {
             errorResponseBody.err = error.err;
             return res.status(error.code).json(errorResponseBody);
         }
-        console.log(error);
         errorResponseBody.err = error;
         return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errorResponseBody);
     }
